@@ -1,6 +1,13 @@
 "use client";
-import { createContext, SetStateAction, useContext, useState } from "react";
+import {
+  createContext,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import Button, { ButtonProps } from "./Button";
+import { createPortal } from "react-dom";
 
 type ModalProps = {
   defaultOpen?: boolean;
@@ -40,7 +47,19 @@ export function Overlay() {
 export function ModalContent({ children }: { children: React.ReactNode }) {
   const { isOpen, setIsOpen } = useModal();
 
-  return (
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setIsOpen(false);
+    }
+
+    if (isOpen) window.addEventListener("keydown", handleKey);
+
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isOpen]);
+
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     isOpen && (
       <>
         <Overlay />
@@ -48,12 +67,17 @@ export function ModalContent({ children }: { children: React.ReactNode }) {
           onClick={() => setIsOpen(false)}
           className="fixed inset-0 flex items-center justify-center"
         >
-          <div onClick={e => e.stopPropagation()}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
             {children}
           </div>
         </div>
       </>
-    )
+    ),
+    document.body
   );
 }
 
