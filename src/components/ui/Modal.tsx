@@ -6,8 +6,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import Button, { ButtonProps } from "./Button";
+
 import { createPortal } from "react-dom";
+import Button, { ButtonProps } from "./Button";
 
 type ModalProps = {
   defaultOpen?: boolean;

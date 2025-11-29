@@ -1,6 +1,6 @@
-import Button from "@/components/Button";
-import { Modal, ModalContent, ModalTriggerButton } from "@/components/Modal";
+import AddNoteForm from "@/components/AddNoteForm";
 import Search from "@/components/Search";
+import { Modal, ModalContent, ModalTriggerButton } from "@/components/ui/Modal";
 import { Plus, PlusIcon } from "lucide-react";
 
 export default async function Home() {
@@ -9,10 +9,12 @@ export default async function Home() {
       <section className="flex flex-col gap-2">
         <Search />
         <Modal>
-          <ModalTriggerButton>
+          <ModalTriggerButton className="w-fit self-end p-4">
             <PlusIcon />
           </ModalTriggerButton>
-          <ModalContent>Hello</ModalContent>
+          <ModalContent>
+            <AddNoteForm />
+          </ModalContent>
         </Modal>
       </section>
     </div>
