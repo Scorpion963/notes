@@ -17,7 +17,7 @@ type SelectProps<T> = {
   value: string;
   options: Option<T>[];
   defaultIndex?: number;
-  className?: string
+  className?: string;
 };
 
 export default function Select<T>({
@@ -45,7 +45,10 @@ export default function Select<T>({
   return (
     <div
       ref={ref}
-      className={cn("relative w-full outline-none bg-background hover:bg-background/90 focus:ring-3 focus:ring-primary px-4 py-2 rounded-lg transition-all", className)}
+      className={cn(
+        "w-full relative outline-none bg-background hover:bg-background/90 focus:ring-3 focus:ring-primary px-4 py-2 rounded-lg transition-all",
+        className
+      )}
     >
       <button
         type="button"
@@ -53,7 +56,9 @@ export default function Select<T>({
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {capitalize(value!)}
-          <ChevronDown className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all`} />
+        <ChevronDown
+          className={`${isOpen ? "rotate-180" : "rotate-0"} transition-all`}
+        />
       </button>
 
       <AnimatePresence>
@@ -62,10 +67,14 @@ export default function Select<T>({
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.5, opacity: 0 }}
-            className="absolute inset-0 top-12 w-full z-50"
+            className="absolute inset-0 top-12 w-full z-50 "
           >
             {options.map((item, index) => (
               <Option
+                className={cn("rounded-none", {
+                  "rounded-t-lg": index === 0,
+                  "rounded-b-lg": index === options.length - 1,
+                })}
                 onClick={() => {
                   setIsOpen(false);
                   onChange(item.value);
